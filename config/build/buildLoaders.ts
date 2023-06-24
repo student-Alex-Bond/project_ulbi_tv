@@ -2,12 +2,11 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpack from 'webpack';
 import { BuildOptions } from './types/config';
 
-export function buildLoaders(options: BuildOptions  ): webpack.RuleSetRule[] {
-  
+export function buildLoaders(options: BuildOptions): webpack.RuleSetRule[] {
   const svgLoader = {
     test: /\.svg$/,
-    use: ['@svgr/webpack']
-  }
+    use: ['@svgr/webpack'],
+  };
 
   const babelLoader = {
     test: /\.(js|jsx|tsx)$/,
@@ -16,22 +15,22 @@ export function buildLoaders(options: BuildOptions  ): webpack.RuleSetRule[] {
       loader: 'babel-loader',
       options: {
         presets: [
-          ['@babel/preset-env', { targets: "defaults" }]
+          ['@babel/preset-env', { targets: 'defaults' }],
         ],
         plugins: [
           [
             'i18next-extract',
             {
               locales: ['ru', 'en'],
-              keyAsDefaultValue: true
-            }
-          ]
-          ]
-          
-      }
-    }
-  }
-  
+              keyAsDefaultValue: true,
+            },
+          ],
+        ],
+
+      },
+    },
+  };
+
   const cssLoders = {
     test: /\.s[ac]ss$/i,
     use: [
@@ -42,34 +41,33 @@ export function buildLoaders(options: BuildOptions  ): webpack.RuleSetRule[] {
           modules: {
             auto: (resPath: string) => resPath.includes('.module.'),
             localIdentName: options.isDev
-              ? "[path][name]__[local]--[hash:base64:5]"
-              : "[hash:base64:8]",  
-          }
-        }
-      }
-      ,
-      'sass-loader'
+              ? '[path][name]__[local]--[hash:base64:5]'
+              : '[hash:base64:8]',
+          },
+        },
+      },
+      'sass-loader',
     ],
-    
-}
-    const typescriptLoaders = {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-  }
-  
-  const fileLoader =    {
+
+  };
+  const typescriptLoaders = {
+    test: /\.tsx?$/,
+    use: 'ts-loader',
+    exclude: /node_modules/,
+  };
+
+  const fileLoader = {
     test: /\.(png|jpe?g|gif|woff|woff2)$/i,
     use: [
       {
         loader: 'url-loader',
         options: {
           limit: 8192,
-        }
+        },
       },
     ],
-   type: 'javascript/auto'
-  } 
+    type: 'javascript/auto',
+  };
 
   return [
     svgLoader,
@@ -77,5 +75,5 @@ export function buildLoaders(options: BuildOptions  ): webpack.RuleSetRule[] {
     babelLoader,
     typescriptLoaders,
     cssLoders,
-   ]
+  ];
 }
